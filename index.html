@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Sistema Solar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            font-family: "Fedra Sans", sans-serif;
+        }
+
+        .intro {
+            background-color: #007196;
+        }
+
+        .screen {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 2vh;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .intro h1 {
+            font-size: 4vh;
+            margin-bottom: 2vh;
+            line-height: 1.2;
+        }
+
+        .intro p {
+            font-size: 2.5vh;
+            margin-bottom: 4vh;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background-color: #fff;
+            color: #007196;
+            padding: 2vh 4vh;
+            font-size: 2.5vh;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #007196;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .quiz-container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007196;
+        }
+
+        .question {
+            margin: 15px 0;
+            text-align: left;
+            color: #000000;
+        }
+
+        .quiz-btn {
+            background-color: #007196;
+            color: white;
+            padding: 12px 24px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-btn:hover {
+            background-color: #fff;
+            color: #007196;
+            border: 2px solid #007196;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        label::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border: 2px solid #007196;
+            margin-right: 8px;
+            display: inline-block;
+            border-radius: 0;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"]:checked+label::before {
+            background-color: #007196;
+        }
+
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #bbb;
+            color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Intro Screen -->
+    <div id="introScreen" class="screen intro active">
+        <h1>DIGUES SI ÉS VERTADER (V) O FALS (F)</h1>
+        <p>Respon vertader o fals a les següents preguntes sobre geografia.</p>
+        <button class="btn" onclick="startQuiz()">Comença</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="screen">
+        <div class="top-bar">
+            <button class="btn back-btn" onclick="goBack()">← Torna enrere</button>
+        </div>
+        <div class="quiz-container">
+            <h2>Digues si és vertader o fals:</h2>
+            <form id="quizForm">
+                <div class="question">
+                    <p>1. Els meridians serveixen per calcular la longitud.</p>
+                    <input type="radio" id="q1-true" name="q1" value="true">
+                    <label for="q1-true">Vertader</label>
+                    <input type="radio" id="q1-false" name="q1" value="false">
+                    <label for="q1-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>2. El tròpic de Capricorn es troba al nord de l'equador.</p>
+                    <input type="radio" id="q2-true" name="q2" value="true">
+                    <label for="q2-true">Vertader</label>
+                    <input type="radio" id="q2-false" name="q2" value="false">
+                    <label for="q2-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>3. El paral·lel 0° és l'equador.</p>
+                    <input type="radio" id="q3-true" name="q3" value="true">
+                    <label for="q3-true">Vertader</label>
+                    <input type="radio" id="q3-false" name="q3" value="false">
+                    <label for="q3-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>4. La latitud i la longitud s'expressen en graus.</p>
+                    <input type="radio" id="q4-true" name="q4" value="true">
+                    <label for="q4-true">Vertader</label>
+                    <input type="radio" id="q4-false" name="q4" value="false">
+                    <label for="q4-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>5. Per expressar una latitud utilitzarem els graus seguits de N (nord) o S (sud).</p>
+                    <input type="radio" id="q5-true" name="q5" value="true">
+                    <label for="q5-true">Vertader</label>
+                    <input type="radio" id="q5-false" name="q5" value="false">
+                    <label for="q5-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>6. Per expressar una longitud utilitzarem els graus seguits d'E (est) o O (oest).</p>
+                    <input type="radio" id="q6-true" name="q6" value="true">
+                    <label for="q6-true">Vertader</label>
+                    <input type="radio" id="q6-false" name="q6" value="false">
+                    <label for="q6-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>7. El meridià 0° i el meridià de Greenwich són dos meridians diferents.</p>
+                    <input type="radio" id="q7-true" name="q7" value="true">
+                    <label for="q7-true">Vertader</label>
+                    <input type="radio" id="q7-false" name="q7" value="false">
+                    <label for="q7-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>8. Hi ha més paral·lels que meridians.</p>
+                    <input type="radio" id="q8-true" name="q8" value="true">
+                    <label for="q8-true">Vertader</label>
+                    <input type="radio" id="q8-false" name="q8" value="false">
+                    <label for="q8-false">Fals</label>
+                </div>
+
+                <div class="question">
+                    <p>9. Els fusos horaris es comencen a comptar des del meridià 0°.</p>
+                    <input type="radio" id="q9-true" name="q9" value="true">
+                    <label for="q9-true">Vertader</label>
+                    <input type="radio" id="q9-false" name="q9" value="false">
+                    <label for="q9-false">Fals</label>
+                </div>
+
+                <button type="button" class="quiz-btn" onclick="calculateScore()">Comprova</button>
+            </form>
+            <p id="result"></p>
+        </div>
+    </div>
+
+
+    <script>
+        function startQuiz() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+
+            document.getElementById("introScreen").classList.remove("active");
+            document.getElementById("quizScreen").classList.add("active");
+        }
+
+        function goBack() {
+            document.exitFullscreen?.();
+            document.getElementById("quizScreen").classList.remove("active");
+            document.getElementById("introScreen").classList.add("active");
+        }
+
+        function calculateScore() {
+            // document.exitFullscreen?.(); // <-- Remove or comment this line
+
+            const answers = {
+                q1: "true",
+                q2: "false",
+                q3: "true",
+                q4: "true",
+                q5: "true",
+                q6: "true",
+                q7: "false",
+                q8: "true",
+                q9: "true"
+            };
+
+            let score = 0;
+            const totalQuestions = Object.keys(answers).length;
+
+            for (let key in answers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                const labels = document.querySelectorAll(`input[name="${key}"] + label`);
+
+                labels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                });
+
+                if (selected) {
+                    if (selected.value === answers[key]) {
+                        score++;
+                        document.querySelector(`label[for="${selected.id}"]`).classList.add('correct');
+                    } else {
+                        document.querySelector(`label[for="${selected.id}"]`).classList.add('incorrect');
+                        const correctInput = document.querySelector(`input[name="${key}"][value="${answers[key]}"]`);
+                        document.querySelector(`label[for="${correctInput.id}"]`).classList.add('correct');
+                    }
+                } else {
+                    const correctInput = document.querySelector(`input[name="${key}"][value="${answers[key]}"]`);
+                    document.querySelector(`label[for="${correctInput.id}"]`).classList.add('correct');
+                }
+            }
+
+            document.getElementById("result").textContent = `Has obtingut ${score} de ${totalQuestions} correctes!`;
+        }
+
+    </script>
+</body>
+
+</html>
